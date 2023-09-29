@@ -15,7 +15,7 @@ export const AuthedComponent = (PageComponent: any) => (props: any) => {
       <AppDrawer drawer={drawer} setDrawer={setDrawer} />
       <AuthedAppBar drawer={drawer} setDrawer={setDrawer} />
       <Toolbar />
-      <Container maxWidth={drawer ? 'lg' : 'xl'}>
+      <Container sx={{marginTop: '10px'}} maxWidth={drawer ? 'lg' : 'xl'}>
         <PageComponent {...props} />
       </Container>
     </div>
