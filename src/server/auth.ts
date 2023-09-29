@@ -48,10 +48,10 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db),
   providers: [
-    DiscordProvider({
+    /*DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
+    }),*/
     /**
      * ...add more providers here.
      *
