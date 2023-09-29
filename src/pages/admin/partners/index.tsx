@@ -47,7 +47,7 @@ export default AuthedComponent(function PartnersPage() {
 
 function ButtonAddPartner() {
     return (
-        <ButtonActivator Activator={() => (<Button variant={'contained'}>Activar</Button>)}>
+        <ButtonActivator Activator={() => (<Button variant={'contained'}>Añadir socio</Button>)}>
             {(onClose) => (
                 <ModalBox onClose={onClose}>
                     <PartnerForm onSubmit={(values) => {
@@ -64,7 +64,7 @@ function PartnersTable({partners}) {
     const columns: GridColDef[] = [
         {field: 'name', headerName: 'Nombre'},
         {field: 'surname', headerName: 'Apellidos'},
-        {field: 'actions', headerName: 'Acciones', align: 'right',  renderCell: (params) => (
+        {field: 'actions', headerName: 'Acciones', renderCell: (params) => (
             <Button variant="contained" size="small">Ver</Button>
         )},
     ]
