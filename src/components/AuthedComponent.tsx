@@ -7,15 +7,20 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Container } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
+import { signOut, useSession } from "next-auth/react";
+import { router } from "@trpc/server";
+import { useRouter } from "next/router";
 
 export const AuthedComponent = (PageComponent: any) => (props: any) => {
-  const [drawer, setDrawer] = React.useState(true)
+  const [drawer, setDrawer] = React.useState(false)
+  const session = useSession()
   return (
     <div>
       <AppDrawer drawer={drawer} setDrawer={setDrawer} />
       <AuthedAppBar drawer={drawer} setDrawer={setDrawer} />
       <Toolbar />
       <Container sx={{marginTop: '10px'}} maxWidth={drawer ? 'lg' : 'xl'}>
+        <p>{session.status}</p>
         <PageComponent {...props} />
       </Container>
     </div>
@@ -50,6 +55,7 @@ function AppDrawer({drawer, setDrawer}) {
 }
 
 function AuthedAppBar({drawer, setDrawer}) {
+  const router = useRouter()
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} position="fixed">
@@ -67,7 +73,10 @@ function AuthedAppBar({drawer, setDrawer}) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Registros
           </Typography>
-          <Button color="secondary">Logout</Button>
+          <Button variant={'contained'} disableElevation onClick={async () => {
+            const result = await signOut({redirect: false})
+            router.push('/')
+          }} color="error">Logout</Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -7,9 +7,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Home() {
   const router = useRouter()
+  const session = useSession()
 
   return (
     <>
@@ -21,11 +24,15 @@ export default function Home() {
       <div>
         <LoginAppBar />
         <Toolbar />
-        <Container sx={{marginTop: '20px'}}>
+        <p>{session.status}</p>
+        {session.status === 'unauthenticated' && <Container sx={{marginTop: '20px'}}>
           <LoginForm onLoginSuccess={() => {
             router.push('/admin/partners')
           }} />
-        </Container>
+        </Container>}
+        {session.status === 'authenticated' && (
+          <Button onClick={() => router.push('/admin/partners')}>Ir a la página inicial</Button>
+        )}
       </div>
     </>
   );
@@ -37,9 +44,15 @@ function LoginForm ({onLoginSuccess}) {
     password: string
   }>()
   return (
-    <form onSubmit={handleSubmit((values) => {
-      console.log(values)
-      onLoginSuccess()
+    <form onSubmit={handleSubmit(async (values) => {
+      const result = await signIn('credentials', {
+        redirect: false,
+        ...values
+      })
+      console.log(result)
+      if (result?.ok) {
+        onLoginSuccess()
+      }
     })}>
       <Grid container gap={1}>
         <Grid item xs={12}>
