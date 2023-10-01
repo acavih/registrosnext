@@ -7,21 +7,7 @@ import { PartnerForm } from "../../../components/partners/PartnerForm"
 import { api } from "~/utils/api"
 import { Partner } from "@prisma/client"
 import Link from 'next/link'
-/**
- * <Breadcrumbs aria-label="breadcrumb">
-    <Link underline="hover" color="inherit" href="/">
-        MUI
-    </Link>
-    <Link
-        underline="hover"
-        color="inherit"
-        href="/material-ui/getting-started/installation/"
-    >
-        Core
-    </Link>
-    <Typography color="text.primary">Breadcrumbs</Typography>
-</Breadcrumbs>
- */
+import { calcularEdad } from "../../../utils/calcularEdad"
 
 export default AuthedComponent(function PartnersPage() {
     const partners = api.partners.partnersList.useQuery()
@@ -69,6 +55,9 @@ function PartnersTable({partners}) {
         {field: 'surname', headerName: 'Apellidos'},
         {field: 'sipcard', headerName: 'SIP'},
         {field: 'phone', headerName: 'Teléfono'},
+        {field: 'bornDate', headerName: 'Edad', valueFormatter: (params) => {
+            return params.value ? (calcularEdad(params.value) + " años") as any : 'N/A'
+        }},
         {field: 'email', headerName: 'Email'},
         {field: 'actions', headerName: 'Acciones', renderCell: (params) => {
             console.log(params)
