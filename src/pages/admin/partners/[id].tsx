@@ -3,6 +3,8 @@ import { useRouter } from "next/router"
 import { AuthedComponent } from "~/components/AuthedComponent"
 import { api } from "~/utils/api"
 import Link from 'next/link'
+import { ModalBox } from "~/components/ui/ModalBox"
+import ButtonActivator from "~/components/ui/ButtonActivator"
 
 export default AuthedComponent(function Partner () {
     const router = useRouter()
@@ -19,12 +21,19 @@ export default AuthedComponent(function Partner () {
                 </Typography>
             </Breadcrumbs>
             <Divider sx={{margin: '10px 0px'}} />
-            <Button variant={'contained'} color={'error'} onClick={async () => {
-                await removePartner.mutateAsync({id: router.query.id as string})
-                router.push('/admin/partners')
-            }}>
-                Eliminar socio
-            </Button>
+            <ButtonActivator Activator={() => (<Button color="error" variant="contained">Eliminar socio</Button>)}>
+                {(onClose) => (
+                    <ModalBox modalTitle="¿Estas seguro que quieres eliminar este socio?" onClose={onClose}>
+                        <Button variant={'contained'} color={'error'} onClick={async () => {
+                            await removePartner.mutateAsync({id: router.query.id as string})
+                            onClose()
+                            router.push('/admin/partners')
+                        }}>
+                            Confirmar
+                        </Button>
+                    </ModalBox>
+                )}
+            </ButtonActivator>
         </>
     )
 })

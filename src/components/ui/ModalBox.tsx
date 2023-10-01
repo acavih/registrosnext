@@ -1,9 +1,12 @@
-import { Modal, Box } from "@mui/material";
+import { Modal, Card, CardContent, CardHeader } from "@mui/material";
 
-export function ModalBox({ onClose, children }) {
+export function ModalBox({ onClose, children, modalTitle = 'Modal sin título' }) {
     return <Modal onClose={onClose} open={true}>
-        <Box sx={{ backgroundColor: 'white', width: '50vw', margin: '20px auto', padding: '25px 10px', borderRadius: '15px' }}>
-            {children}
-        </Box>
+        <Card sx={{width: '50vw', margin: '20px auto'}}>
+            <CardHeader title={modalTitle} />
+            <CardContent>
+                {children}
+            </CardContent>
+        </Card>
     </Modal>;
 }

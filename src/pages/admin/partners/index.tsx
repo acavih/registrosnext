@@ -35,7 +35,7 @@ function ButtonAddPartner({onAdd}) {
     return (
         <ButtonActivator Activator={() => (<Button variant={'contained'}>Añadir socio</Button>)}>
             {(onClose) => (
-                <ModalBox onClose={onClose}>
+                <ModalBox onClose={onClose} modalTitle="Añadir socio">
                     <PartnerForm onSubmit={async (values) => {
                         console.log('añadiendo socio', values)
                         const partnerCreated = await addPartner.mutateAsync(values as any)
