@@ -14,18 +14,28 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String @id @map("_id") @default(uuid())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([name])
-}
-
 model User {
     id        String @id @map("_id") @default(uuid())
     name          String
     email         String   @unique
     password String
+}
+
+model Partner {
+    id        String @id @map("_id") @default(uuid())
+    name String
+    surname String
+    bornDate DateTime?
+    sipcard String
+    email String
+    phone String
+    notes String
+    pendent String
+    
+//     sexo: { type: mongoose.Types.ObjectId, ref: 'resources' },
+//   socioono: { type: mongoose.Types.ObjectId, ref: 'resources' },
+//   nacionalidad: { type: mongoose.Types.ObjectId, ref: 'resources' },
+//   ciudadresidencia: { type: mongoose.Types.ObjectId, ref: 'resources' },
+//   howDidKnowUs: { type: mongoose.Types.ObjectId, ref: 'resources' },
+//   yearDidKnowus: { type: mongoose.Types.ObjectId, ref: 'resources' }
 }

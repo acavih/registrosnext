@@ -1,10 +1,11 @@
 import { Grid, Typography, Button, Breadcrumbs, Divider } from "@mui/material"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
-import { useState } from "react"
 import { AuthedComponent } from "~/components/AuthedComponent"
 import ButtonActivator from "~/components/ui/ButtonActivator"
 import { ModalBox } from "../../../components/ui/ModalBox"
 import { PartnerForm } from "../../../components/partners/PartnerForm"
+import { api } from "~/utils/api"
+import { Partner } from "@prisma/client"
 
 /**
  * <Breadcrumbs aria-label="breadcrumb">
@@ -23,9 +24,7 @@ import { PartnerForm } from "../../../components/partners/PartnerForm"
  */
 
 export default AuthedComponent(function PartnersPage() {
-    const [partners, setPartners] = useState([
-        {id: 1, name: 'Juanjo', surname: 'De la cruz'}
-    ])
+    const partners = api.partners.partnersList.useQuery()
     return (
         <>
             <Breadcrumbs aria-label="breadcrumb">
@@ -35,23 +34,27 @@ export default AuthedComponent(function PartnersPage() {
             <Grid container gap={1}>
                 <Grid xs={12} item display={'flex'} justifyContent={'space-between'}>
                     <Typography variant="h5">Listado de socios</Typography>
-                    <ButtonAddPartner />
+                    <ButtonAddPartner onAdd={() => partners.refetch()} />
                 </Grid>
                 <Grid xs={12} item>
-                    <PartnersTable partners={partners} />
+                    {partners.isFetched && <PartnersTable partners={partners.data} />}
                 </Grid>
             </Grid>
         </>
     )
 })
 
-function ButtonAddPartner() {
+function ButtonAddPartner({onAdd}) {
+    const addPartner = api.partners.createPartner.useMutation()
     return (
         <ButtonActivator Activator={() => (<Button variant={'contained'}>Añadir socio</Button>)}>
             {(onClose) => (
                 <ModalBox onClose={onClose}>
-                    <PartnerForm onSubmit={(values) => {
+                    <PartnerForm onSubmit={async (values) => {
                         console.log('añadiendo socio', values)
+                        const partnerCreated = await addPartner.mutateAsync(values as any)
+                        console.log(partnerCreated)
+                        onAdd()
                         onClose()
                     }} />
                 </ModalBox>
@@ -69,7 +72,6 @@ function PartnersTable({partners}) {
         )},
     ]
     return (
-        <DataGrid rows={partners} autoHeight={true} columns={columns}
-            />
+        <DataGrid rows={partners} autoHeight={true} columns={columns} />
     )
 }

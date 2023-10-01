@@ -1,12 +1,7 @@
 import { Grid, Button, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { Partner } from "@prisma/client";
 import { useForm } from "react-hook-form";
-
-export type Partner = {
-    name: string;
-    surname: string;
-    bornDate: string;
-}
 
 export function PartnerForm({ onSubmit }: { onSubmit: (values: Partner) => void; }) {
     const { handleSubmit, register, setValue, formState } = useForm<Partner>();
@@ -21,8 +16,23 @@ export function PartnerForm({ onSubmit }: { onSubmit: (values: Partner) => void;
                 </Grid>
                 <Grid item xs={12}>
                     <DatePicker value={formState.dirtyFields.bornDate} onChange={(value: any) => {
-                        setValue('bornDate', (value.toDate() as Date).toISOString())
+                        setValue('bornDate', value.toDate())
                     }} label={'Fecha de nacimiento'} sx={{width: '100%'}} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField {...register('sipcard')} fullWidth label={'Tarjeta sip'} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField {...register('email')} fullWidth label={'Correo electrónico'} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField {...register('phone')} fullWidth label={'Teléfono'} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField {...register('notes')} fullWidth label={'Comentarios'} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField {...register('pendent')} fullWidth label={'Cosas pendientes'} />
                 </Grid>
                 <Grid item xs={12} display={'flex'} justifyContent={'flex-end'} flexDirection={'row'}>
                     <Button type={'submit'} variant={'contained'}>Guardar socio</Button>
