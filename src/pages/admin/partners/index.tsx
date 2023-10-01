@@ -67,6 +67,9 @@ function PartnersTable({partners}) {
     const columns: GridColDef[] = [
         {field: 'name', headerName: 'Nombre'},
         {field: 'surname', headerName: 'Apellidos'},
+        {field: 'sipcard', headerName: 'SIP'},
+        {field: 'phone', headerName: 'Teléfono'},
+        {field: 'email', headerName: 'Email'},
         {field: 'actions', headerName: 'Acciones', renderCell: (params) => (
             <Button variant="contained" size="small">Ver</Button>
         )},
