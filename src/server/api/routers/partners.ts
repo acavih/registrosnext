@@ -26,5 +26,13 @@ export const partnersRouter = createTRPCRouter({
         })
 
         return partnerCreated
+    }),
+    partnerShow: protectedProcedure.input(z.object({id: z.string()})).query(async ({input, ctx: {db}}) => {
+        const partner = await db.partner.findFirst({where: {id: input.id}})
+        return partner
+    }),
+    removePartner: protectedProcedure.input(z.object({id: z.string()})).mutation(async ({input, ctx: {db}}) => {
+        await db.partner.delete({where: {id: input.id}})
+        return {}
     })
 })

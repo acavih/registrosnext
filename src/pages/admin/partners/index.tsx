@@ -6,7 +6,7 @@ import { ModalBox } from "../../../components/ui/ModalBox"
 import { PartnerForm } from "../../../components/partners/PartnerForm"
 import { api } from "~/utils/api"
 import { Partner } from "@prisma/client"
-
+import Link from 'next/link'
 /**
  * <Breadcrumbs aria-label="breadcrumb">
     <Link underline="hover" color="inherit" href="/">
@@ -64,15 +64,18 @@ function ButtonAddPartner({onAdd}) {
 }
 
 function PartnersTable({partners}) {
-    const columns: GridColDef[] = [
+    const columns: GridColDef<any, Partner> [] = [
         {field: 'name', headerName: 'Nombre'},
         {field: 'surname', headerName: 'Apellidos'},
         {field: 'sipcard', headerName: 'SIP'},
         {field: 'phone', headerName: 'Teléfono'},
         {field: 'email', headerName: 'Email'},
-        {field: 'actions', headerName: 'Acciones', renderCell: (params) => (
-            <Button variant="contained" size="small">Ver</Button>
-        )},
+        {field: 'actions', headerName: 'Acciones', renderCell: (params) => {
+            console.log(params)
+            return (
+                <Button LinkComponent={Link} href={`/admin/partners/${params.id}`} variant="contained" size="small">Ver</Button>
+            )
+        }},
     ]
     return (
         <DataGrid rows={partners} autoHeight={true} columns={columns} />

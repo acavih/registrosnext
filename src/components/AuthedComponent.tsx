@@ -20,7 +20,6 @@ export const AuthedComponent = (PageComponent: any) => (props: any) => {
       <AuthedAppBar drawer={drawer} setDrawer={setDrawer} />
       <Toolbar />
       <Container sx={{marginTop: '10px'}} maxWidth={drawer ? 'lg' : 'xl'}>
-        <p>{session.status}</p>
         <PageComponent {...props} />
       </Container>
     </div>
